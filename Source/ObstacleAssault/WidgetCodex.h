@@ -33,5 +33,5 @@ protected:
 	void NativeConstruct() override;
 
 private:
-	void OnResponseRecieved(FHttpRequestPtr request, FHttpResponsePtr response, bool connectionSuccessful);
+	void OnResponseRecieved(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bIsConnectionSuccessful);
 };

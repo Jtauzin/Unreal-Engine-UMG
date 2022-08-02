@@ -16,27 +16,27 @@ void UWidgetCodex::NativeConstruct()
 
 void UWidgetCodex::OnMonsterButtonClicked()
 {
-	FHttpRequestRef request = FHttpModule::Get().CreateRequest();
-	request->OnProcessRequestComplete().BindUObject(this, &UWidgetCodex::OnResponseRecieved);
-	request->SetURL("https://www.dnd5eapi.co/api/monsters");
-	request->SetVerb("GET");
-	request->ProcessRequest();
+	FHttpRequestRef Request = FHttpModule::Get().CreateRequest();
+	Request->OnProcessRequestComplete().BindUObject(this, &UWidgetCodex::OnResponseRecieved);
+	Request->SetURL("https://www.dnd5eapi.co/api/monsters");
+	Request->SetVerb("GET");
+	Request->ProcessRequest();
 	CodexLabel->SetVisibility(ESlateVisibility::Collapsed);
 	MonsterButton->SetVisibility(ESlateVisibility::Collapsed);
 }
 
-void UWidgetCodex::OnResponseRecieved(FHttpRequestPtr request, FHttpResponsePtr response, bool connectionSuccessful)
+void UWidgetCodex::OnResponseRecieved(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bIsConnectionSuccessful)
 {
-	TSharedPtr<FJsonObject> responseObj;
-	TSharedRef<TJsonReader<>> reader = TJsonReaderFactory<>::Create(response->GetContentAsString());
-	FJsonSerializer::Deserialize(reader, responseObj);
-	TArray<TSharedPtr<FJsonValue>> resultArray = responseObj->GetArrayField("results");
-	TArray<UMonster*> monsters;
-	for (int32 i = 0; i < resultArray.Num(); i++) {
-		UMonster* monster = NewObject<UMonster>();
-		monster->name = FText::FromString(*resultArray[i]->AsObject()->GetStringField("name"));
-		monster->index = FText::FromString(*resultArray[i]->AsObject()->GetStringField("index")).ToString();
-		monsters.Add(monster);
+	TSharedPtr<FJsonObject> ResponseObj;
+	TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(Response->GetContentAsString());
+	FJsonSerializer::Deserialize(Reader, ResponseObj);
+	TArray<TSharedPtr<FJsonValue>> ResultArray = ResponseObj->GetArrayField("results");
+	TArray<UMonster*> Monsters;
+	for (int32 i = 0; i < ResultArray.Num(); i++) {
+		UMonster* Monster = NewObject<UMonster>();
+		Monster->Name = FText::FromString(*ResultArray[i]->AsObject()->GetStringField("name"));
+		Monster->Index = FText::FromString(*ResultArray[i]->AsObject()->GetStringField("index")).ToString();
+		Monsters.Add(Monster);
 	}
-	ListView->SetListItems(monsters);
+	ListView->SetListItems(Monsters);
 }

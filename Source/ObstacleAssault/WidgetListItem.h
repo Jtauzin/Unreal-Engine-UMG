@@ -48,6 +48,6 @@ protected:
 private:
 	void OnResponseRecieved(FHttpRequestPtr request, FHttpResponsePtr response, bool connectionSuccessful);
 	void MakeHttpRequest(FString myUrl);
-	void adjustVisibility(ESlateVisibility ourVisibility);
-	FString index;
+	void AdjustVisibility(ESlateVisibility ourVisibility);
+	FString Index;
 };

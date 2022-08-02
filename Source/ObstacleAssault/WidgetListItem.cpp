@@ -7,23 +7,23 @@
 #include "Monster.h"
 
 void UWidgetListItem::NativeOnListItemObjectSet(UObject* ListItemObject) {
-	UMonster* monster = Cast<UMonster>(ListItemObject);
-	NameLabel->SetText(monster->name);
-	index = monster->index;
+	UMonster* Monster = Cast<UMonster>(ListItemObject);
+	NameLabel->SetText(Monster->Name);
+	Index = Monster->Index;
 	InfoButton->OnClicked.RemoveDynamic(this, &UWidgetListItem::OnMonsterInfoClicked);
 	InfoButton->OnClicked.AddDynamic(this, &UWidgetListItem::OnMonsterInfoClicked);
-	adjustVisibility(ESlateVisibility::Collapsed);
+	AdjustVisibility(ESlateVisibility::Collapsed);
 }
 
 void UWidgetListItem::OnMonsterInfoClicked() {
 	if (Alignment->GetVisibility() == ESlateVisibility::Collapsed)
 	{
-		FString myUrl = "https://www.dnd5eapi.co/api/monsters/" + index;
-		MakeHttpRequest(myUrl);
+		FString MyUrl = "https://www.dnd5eapi.co/api/monsters/" + Index;
+		MakeHttpRequest(MyUrl);
 	}
 	else
 	{
-		adjustVisibility(ESlateVisibility::Collapsed);
+		AdjustVisibility(ESlateVisibility::Collapsed);
 	}
 }
 
@@ -40,7 +40,7 @@ void UWidgetListItem::OnResponseRecieved(FHttpRequestPtr request, FHttpResponseP
 	UWidgetListItem::Intelligence->SetText(FText::FromString("Intelligence: " + responseObj->GetStringField("intelligence")));
 	UWidgetListItem::Wisdom->SetText(FText::FromString("Wisdom: " + responseObj->GetStringField("wisdom")));
 	UWidgetListItem::Charisma->SetText(FText::FromString("Charisma: " + responseObj->GetStringField("charisma")));
-	adjustVisibility(ESlateVisibility::Visible);
+	AdjustVisibility(ESlateVisibility::Visible);
 }
 
 void UWidgetListItem::MakeHttpRequest(FString myUrl) {
@@ -51,7 +51,7 @@ void UWidgetListItem::MakeHttpRequest(FString myUrl) {
 	request->ProcessRequest();
 }
 
-void UWidgetListItem::adjustVisibility(ESlateVisibility ourVisibility) {
+void UWidgetListItem::AdjustVisibility(ESlateVisibility ourVisibility) {
 	UWidgetListItem::Alignment->SetVisibility(ourVisibility);
 	UWidgetListItem::ArmorClass->SetVisibility(ourVisibility);
 	UWidgetListItem::HitPoints->SetVisibility(ourVisibility);

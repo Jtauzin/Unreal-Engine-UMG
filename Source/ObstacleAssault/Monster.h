@@ -16,8 +16,8 @@ class OBSTACLEASSAULT_API UMonster : public UObject
 
 public:
 	UMonster();
-	FText name;
-	FString index;
+	FText Name;
+	FString Index;
 	FString Alignment;
 	FString ArmorClass;
 	FString HitPoints;
